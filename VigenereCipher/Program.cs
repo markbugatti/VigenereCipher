@@ -8,8 +8,13 @@ namespace VigenereCipher
 {
     class Program
     {
+        string alphabet = "абвгґдеєжзиіїйклмнопрстуфхцчшщьюя";
+        char?[,] vigenereMatrix;
+
         static void Main(string[] args)
         {
+
+
         }
     }
 }
