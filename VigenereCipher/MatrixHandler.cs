@@ -28,13 +28,13 @@ namespace VigenereCipher
 
             // Створити додатковий рядок
             CreateExtraRow();
-            // Створити додатковий стовбець
-            CreateExtraColumn();
             // Перетворити ключ, в масив.
             CreateKeyArray();
             // Виконати перетановку в алфавіті по першому ключу
             InitialPermutation();
-            // Подальша перестановка матриці, передбачає циклічний 
+            // Створити додатковий стовбець
+            CreateExtraColumn();
+            // Необхідно склонувати алфавіт із matrix[1] на всі інші рядки [2 - matrixLength]
             // зсув на 1 вліво для кожного наступного рядка
             SubsequentPermutation();
 
@@ -45,6 +45,7 @@ namespace VigenereCipher
 
         private void Check()
         {
+            Console.OutputEncoding = Encoding.UTF8;
             for (int i = 0; i < matrixLength; i++)
             {
                 for (int j = 0; j < matrixLength; j++)
@@ -59,9 +60,11 @@ namespace VigenereCipher
         {
             for (int i = 2; i < matrixLength; i++)
             {
+                // Скопіювати попередній [i-1] рядок матриці у поточний i-й, та виконати циклычний зсув ліворуч
+                Array.Copy(matrix[i-1], 1, matrix[i], 1, alphabet.Length);
+                char first = matrix[i][1];
                 // циклічний зсув для кожного рядка matrix[i]
-                char first = matrix[i][0];
-                for (int j = 0; j < matrixLength - 1; j++)
+                for (int j = 1; j < matrixLength - 1; j++)
                 {
                     matrix[i][j] = matrix[i][j + 1];
                 }
@@ -88,8 +91,9 @@ namespace VigenereCipher
 
         public void InitialPermutation()
         {
-            // заповнти matrix[1, ...] по ключу
-            for (int i = 0, j = 1; i < keyArray.Length; i++, j++)
+            // заповнти matrix[1 -- keyArray.Length] cимволами з алфавіту, які відповідають цифрам в ключі
+            int i = 0;
+            for (int j = 1; i < keyArray.Length; i++, j++)
             {
                 // индекс буквы в соответсвии с ключем
                 int k = keyArray[i];
@@ -97,33 +101,30 @@ namespace VigenereCipher
                 matrix[1][j] = alphabet[k]; 
             }
 
-            //Predicate<int?> predicate = FindLatter;
             // заповнити matrix[1, ...] залишившимися в алфавіті літерами
             bool exist;
-            for (int i = keyArray.Length + 1; i < alphabet.Length; i++)
+            // початок визначається довжиною масива ключа, оскільки по ключу були заповнені перші літери алфавіту
+            // +1, оскікльки необхідно відступити від 0-го символа matrix[i], 0-й стовпцець - для додаткового алфавіту стовпця.
+            i = keyArray.Length + 1;
+            
+            // Поки рядок matrix[1] не закінчиться
+            while (i < matrixLength)
             {
                 for (int j = 0; j < alphabet.Length; j++)
                 {
-                    // перевіряємо, чи є вже цей елемент в масиві
-
-                    exist = existCharacter();
-                    
+                    // перевіряємо, чи є j-й символ із алфавіту в масиві matrix[1]
                     exist = Array.Exists(matrix[1], x => x == alphabet[j]);
-
-
-                    // якщо немає, тоді додаємо
-                    if(!exist)
+                    // якщо немає, тоді додаємо j-й символ у масив matrix[1]
+                    if (!exist)
                     {
-                        matrix[1][i] = alphabet[i]; 
+                        // Заповнюэмо i-ту комірку символом, якого ще немає в в масиві matrix[1]
+                        matrix[1][i] = alphabet[j];
+                        // переходимо до наступної комарки масиву matrix[1] -- i+1
+                        i++;
                     }
                 }
             }
         }
-
-        //private bool FindLatter(int? obj)
-        //{
-        //    return obj;
-        //}
 
         public void CreateKeyArray()
         {

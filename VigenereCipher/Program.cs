@@ -20,6 +20,8 @@ namespace VigenereCipher
                 vigenereMatrix[i] = new char[length];
             }
 
+
+
             MatrixHandler matrixHandler = new MatrixHandler(vigenereMatrix, 3452, length);
             matrixHandler.CreateMatrix();
 
