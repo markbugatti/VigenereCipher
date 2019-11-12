@@ -37,15 +37,11 @@ namespace VigenereCipher
             // Необхідно склонувати алфавіт із matrix[1] на всі інші рядки [2 - matrixLength]
             // зсув на 1 вліво для кожного наступного рядка
             SubsequentPermutation();
-
             Check();
-            
-
         }
 
         private void Check()
         {
-            Console.OutputEncoding = Encoding.UTF8;
             for (int i = 0; i < matrixLength; i++)
             {
                 for (int j = 0; j < matrixLength; j++)
@@ -128,17 +124,7 @@ namespace VigenereCipher
 
         public void CreateKeyArray()
         {
-            int tempKey = key;
-            List<int> list = new List<int>();
-            
-            while(tempKey > 0)
-            {
-                list.Add(tempKey % 10);
-                tempKey /= 10;
-            }
-            keyArray = list.ToArray();
-            Array.Reverse(keyArray);
-
+            keyArray = NumberHandler.NumberToArray(key);
             // пользоватиель вводит числа, считая с 1, а программа, считает индексыс 0, нужно пользовательский вид преоброзовать в программный.
             for (int i = 0; i < keyArray.Length; i++)
             {

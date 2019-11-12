@@ -11,6 +11,8 @@ namespace VigenereCipher
 
         static void Main(string[] args)
         {
+            Console.OutputEncoding = Encoding.UTF8;
+
             string alphabet = "абвгґдеєжзиіїйклмнопрстуфхцчшщьюя";
             int length = alphabet.Length + 1;
             
@@ -20,10 +22,22 @@ namespace VigenereCipher
                 vigenereMatrix[i] = new char[length];
             }
 
+            Console.Write("Введіть ключ k1 для перестановки алфавіту: ");
+            int k1 = Int32.Parse(Console.ReadLine());
+            int[] keyArray = NumberHandler.NumberToArray(k1);
+            
+            int keyLength = keyArray.Length; 
+            keyArray = NumberHandler.RemoveRepeatableInKey(keyArray);
+            if (keyArray.Length < keyLength)
+            {
+                k1 = NumberHandler.ArrayToInt(keyArray);
+                Console.WriteLine("Виправлений ключ: {0}", k1);
+            }
 
-
-            MatrixHandler matrixHandler = new MatrixHandler(vigenereMatrix, 3452, length);
+            MatrixHandler matrixHandler = new MatrixHandler(vigenereMatrix, k1, length);
             matrixHandler.CreateMatrix();
+
+
 
             Console.ReadKey();
         }

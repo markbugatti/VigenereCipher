@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="MatrixHandler.cs" />
     <Compile Include="CipherHandler.cs" />
+    <Compile Include="NumberHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
